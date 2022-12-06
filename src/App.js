@@ -1,25 +1,42 @@
-import logo from './logo.svg';
+import {v4 as uuidv4} from 'uuid';
 import './App.css';
+import InputItem from "./InputItem";
+import ListItems from "./ListItems";
+import TrashItems from "./TrashItems";
+import {useState} from "react";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    const [list, setList] = useState([
+        {id: uuidv4(), name: 'Learn React', done: false, trash: false},
+        {id: uuidv4(), name: 'Learn HTML', done: false, trash: false}
+    ])
+    const addTask = (input) => {
+        setList([...list, {id: uuidv4(), name: input, done: false, trash: false}])
+    }
+
+    const checkAsDone = (id) => {
+        setList(list.map(el => el.id === id ? {...el, done: !el.done} : el))
+    }
+    const moveToTrashOrBack = (id) => {
+        setList(list.map(el => el.id === id ? {...el, trash: !el.trash} : el))
+    }
+
+    const deleteTask = (id) => {
+        setList(list.filter(el => el.id !== id))
+    }
+
+    return (
+        <div className="App">
+            <h2>TodoList</h2>
+            <InputItem addTask={addTask}/>
+            <ListItems list={list} checkAsDone={checkAsDone}
+                       moveToTrashOrBack={moveToTrashOrBack}/>
+            <hr/>
+            <TrashItems list={list}
+                        moveToTrashOrBack={moveToTrashOrBack}
+                        deleteTask={deleteTask}/>
+        </div>
+    );
 }
 
 export default App;
