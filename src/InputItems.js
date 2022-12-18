@@ -15,7 +15,9 @@ const InputItems = ({tasks, setTasks}) => {
             <input type='text' placeholder='add new task ...'
                    value={inputValue} onChange={(e) => setInputValue(e.target.value)}
             />
-            <button onClick={addNewTask}>Add Task</button>
+            <button disabled={inputValue === ''}
+                    onClick={addNewTask}>Add Task
+            </button>
         </div>
     );
 };
