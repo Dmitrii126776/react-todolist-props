@@ -1,26 +1,21 @@
 import React from 'react';
 
-const TasksItems = ({tasks, setTasks, editTask}) => {
+const ListItems = ({tasks, setTasks, moveToTrashOrBack, editTask}) => {
 
-    const doneButton = (id) => {
+    const doneTask = (id) => {
         setTasks(tasks.map(el => el.id === id ? {...el, done: !el.done} : el))
     }
-
-    const deleteButton = (id) => {
-        setTasks(tasks.filter(el => el.id !== id))
-    }
-
 
     return (
         <div>
             <ol>
-                {tasks.map(el =>
+                {tasks.filter(el => !el.trash).map(el =>
                     (
                         <li key={el.id}>
                             {el.done ? <s>{el.name}</s> : el.name}
                             <button onClick={() => editTask(el.id, el.name)}>Edit</button>
-                            <button onClick={() => doneButton(el.id)}>Done</button>
-                            <button onClick={() => deleteButton(el.id)}>Delete</button>
+                            <button onClick={() => doneTask(el.id)}>Done</button>
+                            <button onClick={() => moveToTrashOrBack(el.id)}>Trash</button>
                         </li>
                     ))}
             </ol>
@@ -28,4 +23,4 @@ const TasksItems = ({tasks, setTasks, editTask}) => {
     );
 };
 
-export default TasksItems;
+export default ListItems;
